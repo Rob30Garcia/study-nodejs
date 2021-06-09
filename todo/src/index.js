@@ -5,6 +5,8 @@ const app = express();
 
 app.use(express.json());
 
+const users = [];
+
 const user = {
   id: '',
   name: '',
@@ -20,10 +22,23 @@ app.post('/users', (request, response) => {
   user.name = name;
   user.username = username;
 
+  users.push(user);
+
   return response.json({
     user: user
   })
-})
+});
 
+app.get('/todos', (request, response) => {
+  const {username} = request.body;
+
+  if(!users.find(element => element.username === username)) {
+    return response.status(401).json({ error: "Username not found!"});
+  }
+
+  return response.json({
+    todos: user.todos,
+  })
+});
 
 app.listen(3333);
