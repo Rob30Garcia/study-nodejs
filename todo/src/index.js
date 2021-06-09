@@ -105,4 +105,34 @@ app.put("/todos/:id", (request, response) => {
 
 });
 
+app.patch('/todos/:id/done', (request, response) => {
+  const { username } = request.headers;
+  const { id } = request.params;
+
+  const userFind = users.find(element => element.username === username);
+
+  if(!userFind) {
+    return response.status(401).json({ error: "Username not found!"});
+  }
+
+  const index = users.indexOf(userFind);
+
+  const todoFind = users[index].todos.find(element => element.id === id);
+
+  if(!todoFind) {
+    return response.status(401).json({ error: "To Do not found!"});
+  }
+
+  users[index].todos.map(element => {
+    if(element.id === id) {
+      element.done = true;
+    }
+  });
+
+  return response.json({
+    todo: users[index].todos
+  });
+
+});
+
 app.listen(3333);
