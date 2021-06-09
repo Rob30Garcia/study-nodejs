@@ -41,7 +41,7 @@ app.get('/todos', (request, response) => {
   const {username} = request.body;
 
   if(!users.find(element => element.username === username)) {
-    return response.status(401).json({ error: "Username not found!"});
+    return response.status(404).json({ error: "Username not found!"});
   }
 
   return response.json({
@@ -56,7 +56,7 @@ app.post('/todos', (request, response) => {
   const userFind = users.find(element => element.username === username);
 
   if(!userFind) {
-    return response.status(401).json({ error: "Username not found!"});
+    return response.status(404).json({ error: "Username not found!"});
   }
   
   todo.id = v4();
@@ -81,7 +81,7 @@ app.put("/todos/:id", (request, response) => {
   const userFind = users.find(element => element.username === username);
 
   if(!userFind) {
-    return response.status(401).json({ error: "Username not found!"});
+    return response.status(404).json({ error: "Username not found!"});
   }
 
   const index = users.indexOf(userFind);
@@ -89,7 +89,7 @@ app.put("/todos/:id", (request, response) => {
   const todoFind = users[index].todos.find(element => element.id === id);
 
   if(!todoFind) {
-    return response.status(401).json({ error: "To Do not found!"});
+    return response.status(404).json({ error: "To Do not found!"});
   }
 
   users[index].todos.map(element => {
@@ -112,7 +112,7 @@ app.patch('/todos/:id/done', (request, response) => {
   const userFind = users.find(element => element.username === username);
 
   if(!userFind) {
-    return response.status(401).json({ error: "Username not found!"});
+    return response.status(404).json({ error: "Username not found!"});
   }
 
   const index = users.indexOf(userFind);
@@ -120,7 +120,7 @@ app.patch('/todos/:id/done', (request, response) => {
   const todoFind = users[index].todos.find(element => element.id === id);
 
   if(!todoFind) {
-    return response.status(401).json({ error: "To Do not found!"});
+    return response.status(404).json({ error: "To Do not found!"});
   }
 
   users[index].todos.map(element => {
@@ -142,7 +142,7 @@ app.delete("/todos/:id", (request, response) => {
   const userFind = users.find(element => element.username === username);
 
   if(!userFind) {
-    return response.status(401).json({ error: "Username not found!"});
+    return response.status(404).json({ error: "Username not found!"});
   }
 
   const index = users.indexOf(userFind);
@@ -150,7 +150,7 @@ app.delete("/todos/:id", (request, response) => {
   const todoFind = users[index].todos.find(element => element.id === id);
 
   if(!todoFind) {
-    return response.status(401).json({ error: "To Do not found!"});
+    return response.status(404).json({ error: "To Do not found!"});
   }
 
   const todoIndex = users[index].todos.indexOf(todoFind);
