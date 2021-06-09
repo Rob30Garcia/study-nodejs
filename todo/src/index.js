@@ -73,4 +73,36 @@ app.post('/todos', (request, response) => {
   });
 });
 
+app.put("/todos/:id", (request, response) => {
+  const { username } = request.headers;
+  const { id } = request.params;
+  const { title, deadline } = request.body;
+
+  const userFind = users.find(element => element.username === username);
+
+  if(!userFind) {
+    return response.status(401).json({ error: "Username not found!"});
+  }
+
+  const index = users.indexOf(userFind);
+
+  const todoFind = users[index].todos.find(element => element.id === id);
+
+  if(!todoFind) {
+    return response.status(401).json({ error: "To Do not found!"});
+  }
+
+  users[index].todos.map(element => {
+    if(element.id === id) {
+      element.title = title;
+      element.deadline = new Date(deadline);
+    }
+  });
+
+  return response.json({
+    todo: users[index].todos
+  });
+
+});
+
 app.listen(3333);
