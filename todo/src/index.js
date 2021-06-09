@@ -14,6 +14,14 @@ const user = {
   todos: []
 }; 
 
+const todo = {
+  id: '',
+  title: '',
+  done: false,
+  deadline: '',
+  create_at: '',
+}
+
 
 app.post('/users', (request, response) => {
   const { id, name, username} = request.body;
@@ -39,6 +47,30 @@ app.get('/todos', (request, response) => {
   return response.json({
     todos: user.todos,
   })
+});
+
+app.post('/todos', (request, response) => {
+  const { username } = request.headers;
+  const { title, deadline } = request.body;
+  
+  const userFind = users.find(element => element.username === username);
+
+  if(!userFind) {
+    return response.status(401).json({ error: "Username not found!"});
+  }
+  
+  todo.id = v4();
+  todo.title = title;
+  todo.deadline = new Date(deadline);
+  todo.create_at = new Date();
+
+  const index = users.indexOf(userFind);
+
+  users[index].todos.push(todo);
+
+  return response.json({
+    todo: todo
+  });
 });
 
 app.listen(3333);
