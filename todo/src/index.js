@@ -135,4 +135,32 @@ app.patch('/todos/:id/done', (request, response) => {
 
 });
 
+app.delete("/todos/:id", (request, response) => {
+  const { username } = request.headers;
+  const { id } = request.params;
+
+  const userFind = users.find(element => element.username === username);
+
+  if(!userFind) {
+    return response.status(401).json({ error: "Username not found!"});
+  }
+
+  const index = users.indexOf(userFind);
+
+  const todoFind = users[index].todos.find(element => element.id === id);
+
+  if(!todoFind) {
+    return response.status(401).json({ error: "To Do not found!"});
+  }
+
+  const todoIndex = users[index].todos.indexOf(todoFind);
+
+  users[index].todos.splice(todoIndex, 1);
+
+  return response.json({
+    todos: users[index].todos
+  })
+
+});
+
 app.listen(3333);
